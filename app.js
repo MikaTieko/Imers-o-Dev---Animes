@@ -1,14 +1,19 @@
 function pesquisar() {
-    // Obtém a seção HTML onde os resultados serão exibidos
-    let section = document.getElementById("resultados-pesquisa");
-    console.log(section); // Loga o elemento HTML no console para verificação
-  
-    // Inicializa uma string vazia para armazenar os resultados
-    let resultados = "";
-  
-    // Itera sobre cada dado na lista de dados
-    for (let dado of dados) {
-      // Cria um elemento HTML para cada dado
+  const campoPesquisa = document.getElementById("campo-pesquisa").value.toLowerCase();
+  const section = document.getElementById("resultados-pesquisa");
+
+  if (!campoPesquisa) {
+    section.innerHTML = "<p>Anime não encontrado</p>";
+    return;
+  }
+
+  let resultados = "";
+  dados.forEach(dado => {
+    if (
+      dado.titulo.toLowerCase().includes(campoPesquisa) ||
+      dado.descricao.toLowerCase().includes(campoPesquisa) ||
+      dado.tags.some(tag => tag.toLowerCase() === campoPesquisa)
+    ) {
       resultados += `
         <div class="item-resultado">
           <h2>
@@ -19,7 +24,7 @@ function pesquisar() {
         </div>
       `;
     }
-  
-    // Atribui os resultados à seção HTML
-    section.innerHTML = resultados;
-  }
+  });
+
+  section.innerHTML = resultados || "<p> Nada foi encontrado </p>";
+}
